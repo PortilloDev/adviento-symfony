@@ -1,0 +1,9 @@
+#shared_routes:
+#  resource: '%kernel.project_dir%/src/Shared/Infrastructure/Symfony/Controller/'
+#  type: attribute
+#  prefix: App\Shared\Infrastructure\Symfony\Controller
+#
+#user_routes:
+#  resource: '%kernel.project_dir%/src/User/Infrastructure/Symfony/Controller/'
+#  type: attribute
+#  prefix: App\User\Infrastructure\Symfony\Controller
