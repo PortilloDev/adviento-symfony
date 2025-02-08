@@ -7,4 +7,6 @@
 /public/bundles/
 /var/
 /vendor/
+.idea/
+/.phpunit.result.cache
 ###< symfony/framework-bundle ###
