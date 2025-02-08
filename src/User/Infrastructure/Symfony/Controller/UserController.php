@@ -2,15 +2,16 @@
 
 namespace App\User\Infrastructure\Symfony\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Shared\Infrastructure\Symfony\Controller\AbstractApiController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
-class UserController extends AbstractController
+class UserController extends AbstractApiController
 {
-    #[Route('/check', name: 'health_check', methods: ['GET'])]
+
+    #[Route('/api/v1/users', name: 'get_users', methods: ['GET'])]
     public function __invoke(): JsonResponse
     {
-        return new JsonResponse(['status' => 'ok']);
+        return new JsonResponse(['status' => 'This is a api user']);
     }
 }

@@ -2,11 +2,11 @@
 
 namespace App\Book\Infrastructure\Symfony\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Shared\Infrastructure\Symfony\Controller\AbstractApiController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
-class BookController extends AbstractController
+class BookController extends AbstractApiController
 {
     #[Route('/api/v1/books', name: 'get_books', methods: ['GET'])]
     public function __invoke(): JsonResponse

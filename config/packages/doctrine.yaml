@@ -30,12 +30,6 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Book/Infrastructure/Persistence/Mapping'
                 prefix: 'App\Book\Domain\Entity'
                 alias: Book
-            Shared:
-                type: xml
-                is_bundle: false
-                dir: '%kernel.project_dir%/src/Shared/Infrastructure/Persistence/Mapping'
-                prefix: 'App\Shared\Domain\Entity'
-                alias: Shared
 
 when@test:
     doctrine:
