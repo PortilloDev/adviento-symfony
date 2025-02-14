@@ -17,7 +17,7 @@ class CreateUserCommandHandler implements HandlerInterface
 
     public function __invoke(CreateUserCommand $command): int
     {
-        $user = $this->userRepository->findByEmail($command->email);
+        $user = $this->userRepository->findByEmailOrFail($command->email);
         if ($user) {
             throw new UserAlreadyExistsException();
         }

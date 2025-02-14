@@ -2,29 +2,34 @@
 
 namespace App\User\Infrastructure\Persistence\Repository;
 
+use App\Shared\Infrastructure\Doctrine\BaseRepository;
 use App\User\Domain\Contract\UserRepositoryInterface;
 use App\User\Domain\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use App\User\Domain\Exception\UserNotFoundException;
 
-class UserRepository extends ServiceEntityRepository implements UserRepositoryInterface
+class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
-
-    public function __construct(ManagerRegistry $registry)
+    protected static function entityClass(): string
     {
-        parent::__construct($registry, User::class);
+        return User::class;
     }
 
-    public function findByEmail(string $email): ?User
+    public function findByEmailOrFail(string $email): ?User
     {
-        return $this->findOneBy(['email' => $email]);
+        if (null === $user = $this->objectRepository->findOneBy(['email' => $email])) {
+            throw UserNotFoundException::fromEmail($email);
+        }
+        return $user;
     }
 
     public function save(User $user): void
     {
-        $em = $this->getEntityManager();
-        $em->persist($user);
-        $em->flush();
+        $this->saveEntity($user);
+    }
+
+    public function remove(User $user): void
+    {
+        $this->removeEntity($user);
     }
 
 }

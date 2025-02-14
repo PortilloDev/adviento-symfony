@@ -14,3 +14,8 @@ services:
     _instanceof:
         App\Shared\Domain\Bus\HandlerInterface:
             tags: [ 'messenger.message_handler' ]
+
+
+    App\Shared\Infrastructure\Symfony\Listener\JsonExceptionResponseTransformerListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException, priority: 0 }
