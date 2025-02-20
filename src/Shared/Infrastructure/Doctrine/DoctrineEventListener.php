@@ -10,7 +10,6 @@ use Doctrine\ORM\Event\PostPersistEventArgs;
 use Doctrine\ORM\Event\PostUpdateEventArgs;
 use Doctrine\ORM\Events;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
-
 #[AsDoctrineListener(event: Events::postPersist)]
 #[AsDoctrineListener(event: Events::postUpdate)]
 #[AsDoctrineListener(event: Events::postFlush)]
@@ -27,22 +26,29 @@ class DoctrineEventListener
         $object = $args->getObject();
 
         if ($object instanceof AggregateRoot) {
-            array_push($this->events, ...$object->pullEvents());
+            $this->collectEvents($object);
         }
     }
 
     public function postUpdate(PostUpdateEventArgs $args): void
     {
         $object = $args->getObject();
+
         if ($object instanceof AggregateRoot) {
-            array_push($this->events, ...$object->pullEvents());
+            $this->collectEvents($object);
+        }
+    }
+
+    private function collectEvents(AggregateRoot $aggregateRoot): void
+    {
+        foreach ($aggregateRoot->pullEvents() as $event) {
+            $this->events[spl_object_id($event)] = $event;
         }
     }
 
     public function postFlush(PostFlushEventArgs $args): void
     {
-        foreach ($this->events as $key => $event) {
-            unset($this->events[$key]);
+        while ($event = array_shift($this->events)) {
             $this->messageBus->dispatch($event, [new DelayStamp(200)]);
         }
     }

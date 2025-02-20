@@ -3,6 +3,8 @@
 namespace App\User\Infrastructure\Symfony\Controller;
 
 use App\Shared\Infrastructure\Symfony\Controller\AbstractApiController;
+use App\Shared\Infrastructure\Symfony\Controller\RequestService;
+use App\Shared\Infrastructure\Symfony\Messenger\MessageBusHelper;
 use App\User\Application\Command\CreateUser\CreateUserCommand;
 use App\User\Infrastructure\Symfony\Model\Response\CreateUserResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,12 +16,11 @@ class UserCreateController extends AbstractApiController
     #[Route('/api/v1/users', name: 'create_users', methods: ['POST'])]
     public function __invoke(Request $request): JsonResponse
     {
-        $content = $request->toArray();
-        $email = $content['email'];
-        $password = $content['password'];
-        $name = $content['name'];
+        $email = RequestService::getField($request, 'email');
+        $name = RequestService::getField($request, 'name');
+        $password = RequestService::getField($request, 'password');
 
-       $userId = $this->dispatch(new CreateUserCommand($name, $email, $password));
+        $userId = $this->dispatch(new CreateUserCommand($name, $email, $password));
 
         return $this->success(new CreateUserResponse($userId), 201);
     }

@@ -4,10 +4,11 @@ namespace App\User\Domain\Entity;
 
 use App\Shared\Domain\Entity\AggregateRoot;
 use App\User\Domain\Event\CreatedUserEvent;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Uuid;
 
-class User extends AggregateRoot implements UserInterface
+class User extends AggregateRoot implements PasswordAuthenticatedUserInterface, UserInterface
 {
     private \DateTime $createdAt;
     private \DateTime $updatedAt;
@@ -28,17 +29,17 @@ class User extends AggregateRoot implements UserInterface
         $this->markAsUpdated();
     }
 
-    public static function create(string $name, string $email, string $password): self
+    public static function create(string $name, string $email): self
     {
-        $user = new self($name, $email, $password);
-        $user->events[] = new CreatedUserEvent($user->getEmail());
+        $user = new self($name, $email);
+//        $user->events[] = new CreatedUserEvent($user->getEmail());
         return $user;
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getId(): int
+    public function getId(): string
     {
         return $this->id;
     }

@@ -2,10 +2,13 @@
 
 namespace App\User\Domain\Exception;
 
-class UserAlreadyExistsException extends \Exception
+use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
+
+class UserAlreadyExistsException extends ConflictHttpException
 {
-    public function __construct()
+    private const MESSAGE = 'User with this email %s already exists';
+    public static function fromEmail(string $email): self
     {
-        parent::__construct('User already exists');
+        throw new self(sprintf(self::MESSAGE, $email));
     }
 }

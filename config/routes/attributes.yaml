@@ -2,10 +2,6 @@ shared_routes:
   resource: '../../src/Shared/Infrastructure/Symfony/Controller/'
   type: attribute
 
-third_party_routes:
-    resource: '../../src/Shared/Infrastructure/ThirdPartyServices/Controller/'
-    type: attribute
-
 user_routes:
   resource: '../../src/User/Infrastructure/Symfony/Controller/'
   type: attribute

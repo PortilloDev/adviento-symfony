@@ -4,7 +4,7 @@ namespace App\User\Infrastructure\Symfony\Model\Response;
 
 class CreateUserResponse implements \JsonSerializable
 {
-    public function __construct(public int $id)
+    public function __construct(public string $id)
     {
     }
 
